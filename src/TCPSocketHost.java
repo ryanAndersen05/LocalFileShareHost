@@ -2,6 +2,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.net.Inet4Address;
 import java.io.*;
+import java.lang.Thread;
 
 
 public class TCPSocketHost {
@@ -15,7 +16,7 @@ public class TCPSocketHost {
 	public final static int CLIENT_PORT = 12390;
 	
 	public String localHostAddress;
-	
+	public Thread hostReadThread;
 	
 	public TCPSocketHost() 
 	{
@@ -25,6 +26,35 @@ public class TCPSocketHost {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		hostReadThread = new HostReadThread();
+		hostReadThread.start();
 	}
 
+	private class HostReadThread extends Thread
+	{
+		
+		
+		@Override
+		public void run() 
+		{
+			while(true) 
+			{
+				
+				try {
+					Thread.sleep(1000);
+					System.out.println("Next Loop Started");
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		public void start() 
+		{
+			System.out.println("TCP Socket Read Thread Started");
+			super.setDaemon(true);
+			super.start();
+		}
+	}
 }
